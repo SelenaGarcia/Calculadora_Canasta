@@ -28,14 +28,14 @@
       </ul>
     </tab-content>
     <tab-content title="Resultado para tu hogar">
-       Cantidad de miembros en el hogar
+      Cantidad de miembros en el hogar Canasta básica general
+      <strong>{{ canastaBasicaGeneral }} </strong> Canasta básica alimentaria
+      <strong>{{ canastaBasicaAlimentaria }}</strong>
 
-       Canasta básica general {{canastaBasicaGeneral}}
-       Canasta básica general {{canastaBasicaAlimentaria}}
-
-       Si los ingresos de tu hogar se encuentran por debajo de los {{canastaBasicaGeneral}} está por debajo de la línea de la pobreza: por debajo de {{canastaBasicaAlimentaria}} se encuentra dentro de la indigencia.
-
-       Fuente: Dirección de estadistica de la provincia - Mayo 2021.
+      Si los ingresos de tu hogar se encuentran por debajo de los
+      {{ canastaBasicaGeneral }} está por debajo de la línea de la pobreza: por
+      debajo de {{ canastaBasicaAlimentaria }} se encuentra dentro de la
+      indigencia. Fuente: Dirección de estadistica de la provincia - Mayo 2021.
     </tab-content>
   </form-wizard>
 </template>
@@ -54,7 +54,9 @@ export default {
   data() {
     return {
       personas: 1,
-      edad:'',
+      edad: "",
+      canastaBasicaGeneral: 0,
+      canastaBasicaAlimentaria: 0,
     };
   },
 };
