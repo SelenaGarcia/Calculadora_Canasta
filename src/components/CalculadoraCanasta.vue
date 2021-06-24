@@ -75,8 +75,8 @@ export default {
       }
 
       var numbForm = new Intl.NumberFormat("es-ES" );
-      this.canastaBasicaGeneral = numbForm.format(indice * 17390.47);
-      this.canastaBasicaAlimentaria = numbForm.format(indice * 7833.55);
+      this.canastaBasicaGeneral = numbForm.format(indice * 18150.98);
+      this.canastaBasicaAlimentaria = numbForm.format(indice * 8176.12);
     },
     calcularIndice(edad, sexo) {
       if (edad < 0) {
