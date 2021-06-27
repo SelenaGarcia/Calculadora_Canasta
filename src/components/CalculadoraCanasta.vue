@@ -1,13 +1,14 @@
 <template>
   <form-wizard
     color="#0d74bf"
+    ref="wizard"
     back-button-text="Anterior"
     next-button-text="Siguiente"
     finish-button-text="Volver al inicio"
+    @on-complete="onComplete"
   >
     <h2 slot="title">Cálculo de la canasta básica familiar</h2>
-    <h2 slot="next ">Siguiente</h2>
-
+  
     <tab-content title="Miembros del hogar">
       Cantidad de miembros en el hogar
       <b-form-select
@@ -63,9 +64,13 @@ export default {
       sexos: ["F", "F", "F", "F", "F", "F"],
       canastaBasicaGeneral: 0,
       canastaBasicaAlimentaria: 0,
+      start:0
     };
   },
   methods: {
+    onComplete: function(){
+      this.$refs["wizard"].reset () 
+  },
     calcularCanasta() {
       var indice = 0;
 
