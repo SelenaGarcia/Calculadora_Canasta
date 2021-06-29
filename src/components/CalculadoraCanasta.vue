@@ -1,76 +1,145 @@
 <template>
-  <form-wizard
-    color="#0d74bf"
-    ref="wizard"
-    back-button-text="Anterior"
-    next-button-text="Siguiente"
-    finish-button-text="Volver al inicio"
-    @on-complete="onComplete"
+  <b-card
+    border-variant="primary"
+    no-body
+    class="d-flex flex-column mx-2 card-calculadora p-0"
   >
-    <h2 slot="title">Cálculo de la canasta básica familiar</h2>
-  
-    <tab-content title="Miembros del hogar">
-      Cantidad de miembros en el hogar
-      <b-form-select
-        v-model="numPersonas"
-        :options="[1, 2, 3, 4, 5, 6]"
-      ></b-form-select>
-    </tab-content>
-    <tab-content title="Grupo familiar">
-      Como se conforma el hogar
-      <ul id="listaFliar">
-        <li :key="index" v-for="index in numPersonas">
+    <div class="d-flex flex-column mb-auto p-4">
+      <p class="col-12 text-titulo mt-2">
+        Cálculo de la canasta básica familiar
+      </p>
+
+      <div v-if="paso1" class="d-flex flex-wrap justify-content-center">
+        <img class="col-12 image-limitada" :src="'/Calculator-pana.svg'" />
+
+        <p class="col-12 text-subtitulo">Cantidad de miembros en el hogar</p>
+        <div class="d-flex col-12 justify-content-center">
           <b-form-select
+            class="selector-cantidad mx-2"
+            v-model="numPersonas"
+            :options="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]"
+          />
+
+          <b-button v-on:click="onStep(1)" class="button-lg mx-2">
+            Siguiente
+          </b-button>
+        </div>
+      </div>
+
+      <div v-if="paso2">
+        <p class="col-12 text-subtitulo">Como se conforma el hogar</p>
+
+        <div
+          class="d-flex justify-content-center mt-2"
+          :key="index"
+          v-for="index in numPersonas"
+        >
+          <p class="text-numeracion col-1">{{ index }}</p>
+
+          <b-form-select
+            class="selector-sexo col-3 mx-2"
             :key="'sex' + index"
             v-model="sexos[index - 1]"
-            :options="['Femenino', 'Masculino']"
+            :options="options"
             v-on="calcularCanasta()"
-          ></b-form-select>
+            >Sexo</b-form-select
+          >
+
           <b-form-input
+            class="d-flex input-edad col-3 mx-2"
             v-model="edades[index - 1]"
             placeholder="Edad"
-          ></b-form-input>
-        </li>
-      </ul>
-    </tab-content>
-    <tab-content title="Resultado para tu hogar">
-      Cantidad de miembros en el hogar Canasta básica general
-      <strong>${{ canastaBasicaGeneral }} </strong> Canasta básica alimentaria
-      <strong>${{ canastaBasicaAlimentaria }}</strong>
+          />
+        </div>
+        <b-button v-on:click="onStep(2)" class="button-lg mt-3">
+          Siguiente
+        </b-button>
+      </div>
 
-      Si los ingresos de tu hogar se encuentran por debajo de los
-      {{ canastaBasicaGeneral }} está por debajo de la línea de la pobreza: por
-      debajo de {{ canastaBasicaAlimentaria }} se encuentra dentro de la
-      indigencia. Fuente: Dirección de estadistica de la provincia - Mayo 2021.
-    </tab-content>
-  </form-wizard>
+      <div v-if="paso3">
+        Resultado para tu hogar Cantidad de miembros en el hogar Canasta básica
+        general
+        <strong>${{ canastaBasicaGeneral }} </strong> Canasta básica alimentaria
+        <strong>${{ canastaBasicaAlimentaria }}</strong>
+
+        Si los ingresos de tu hogar se encuentran por debajo de los
+        {{ canastaBasicaGeneral }} está por debajo de la línea de la pobreza:
+        por debajo de {{ canastaBasicaAlimentaria }} se encuentra dentro de la
+        indigencia. Fuente: Dirección de estadistica de la provincia - Mayo
+        2021.
+
+        <b-button v-on:click="onStep(0)" class="button-lg-volver">
+          Volver a inicio
+        </b-button>
+      </div>
+    </div>
+
+    <img
+      class="col-12 align-self-end mt-auto image-limitada-h"
+      :src="'/footer.png'"
+    />
+  </b-card>
 </template>
 
 <script>
-import { FormWizard, TabContent } from "vue-form-wizard";
-import "vue-form-wizard/dist/vue-form-wizard.min.css";
 //component code
 
 export default {
   name: "CalculadoraCanasta",
-  components: {
-    FormWizard,
-    TabContent,
-  },
+  components: {},
   data() {
     return {
+      paso1: true,
+      paso2: false,
+      paso3: false,
       numPersonas: 1,
-      edades: [0, 0, 0, 0, 0, 0],
-      sexos: ["F", "F", "F", "F", "F", "F"],
+      edades: [],
+      sexos: [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+      ],
       canastaBasicaGeneral: 0,
       canastaBasicaAlimentaria: 0,
-      start:0
+      start: 0,
+      options: [
+        { value: null, text: "Sexo", disabled: true },
+        { value: "Femenino", text: "Femenino" },
+        { value: "Masculino", text: "Masculino" },
+      ],
     };
   },
   methods: {
-    onComplete: function(){
-      this.$refs["wizard"].reset () 
-  },
+    onStep(paso) {
+      this.paso1 = false;
+      this.paso2 = false;
+      this.paso3 = false;
+      switch (paso) {
+        case 0:
+          this.paso1 = true;
+          
+          break;
+        case 1:
+          this.paso2 = true;
+          break;
+        case 2:
+          this.paso3 = true;
+          break;
+      }
+    },
+    onComplete: function () {
+      this.$refs["wizard"].reset();
+    },
     calcularCanasta() {
       var indice = 0;
 
@@ -79,11 +148,14 @@ export default {
         indice = indice + this.calcularIndice(this.edades[i], this.sexos[i]);
       }
 
-      var numbForm = new Intl.NumberFormat("es-ES" );
+      var numbForm = new Intl.NumberFormat("es-ES");
       this.canastaBasicaGeneral = numbForm.format(indice * 18150.98);
       this.canastaBasicaAlimentaria = numbForm.format(indice * 8176.12);
     },
     calcularIndice(edad, sexo) {
+      if ((isNaN(edad))) {
+        return 0;
+      }
       if (edad < 0) {
         return 0;
       }
@@ -232,4 +304,74 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.image-limitada {
+  max-width: 300px;
+}
+
+.image-limitada-h {
+  max-height: 30px;
+  object-fit: scale-down;
+}
+
+.button-lg {
+  border-radius: 90px;
+  background-color: #476cc2;
+  border-width: 0px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 35px;
+  padding-right: 35px;
+}
+
+.selector-cantidad {
+  width: 80px;
+  background: #f3f3f3;
+  border-radius: 4px;
+  border-color: #cdcdcd;
+}
+
+.selector-sexo {
+  background: #f3f3f3;
+  border-radius: 4px;
+  border-color: #cdcdcd;
+}
+
+.input-edad {
+  background: #f3f3f3;
+  border-radius: 4px;
+  width: 25%;
+  border-color: #cdcdcd;
+}
+
+.card-calculadora {
+  min-height: 700px;
+  border-radius: 20px;
+  border-width: 3px;
+}
+
+.text-titulo {
+  color: #000000;
+  font-size: 1.5rem;
+  text-align: left;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+}
+
+.text-numeracion {
+  color: #5b5b5b;
+  font-size: 1.2rem;
+  text-align: center;
+  margin: inherit;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+}
+
+.text-subtitulo {
+  color: #476cc2;
+  font-size: 1.2rem;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+}
 </style>

@@ -1,21 +1,22 @@
 <template>
   <div id="app">
-    <CalculadoraCanasta/>
+    <CalculadoraCanasta />
   </div>
 </template>
 
 <script>
-import CalculadoraCanasta from './components/CalculadoraCanasta.vue'
+import CalculadoraCanasta from "./components/CalculadoraCanasta.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    CalculadoraCanasta
-  }
-}
+    CalculadoraCanasta,
+  },
+};
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap');
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
