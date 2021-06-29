@@ -57,20 +57,36 @@
       </div>
 
       <div v-if="paso3">
-        Resultado para tu hogar Cantidad de miembros en el hogar Canasta básica
-        general
-        <strong>${{ canastaBasicaGeneral }} </strong> Canasta básica alimentaria
-        <strong>${{ canastaBasicaAlimentaria }}</strong>
+        <p class="col-12 text-subtitulo">Resultado para tu hogar</p>
 
-        Si los ingresos de tu hogar se encuentran por debajo de los
-        {{ canastaBasicaGeneral }} está por debajo de la línea de la pobreza:
-        por debajo de {{ canastaBasicaAlimentaria }} se encuentra dentro de la
-        indigencia. Fuente: Dirección de estadistica de la provincia - Mayo
-        2021.
+        <p class="col-12 text-tipo-canasta">Canasta básica general</p>
 
-        <b-button v-on:click="onStep(0)" class="button-lg-volver">
-          Volver a inicio
-        </b-button>
+        <p class="col-12 text-numero-canasta">${{ canastaBasicaGeneral }}</p>
+
+        <p class="col-12 text-tipo-canasta">Canasta básica alimentaria</p>
+
+        <p class="col-12 text-numero-canasta">
+          ${{ canastaBasicaAlimentaria }}
+        </p>
+
+        <p class="">
+          Si los ingresos de tu hogar se encuentran por debajo de los
+          {{ canastaBasicaGeneral }} está por debajo de la línea de la pobreza:
+          por debajo de {{ canastaBasicaAlimentaria }} se encuentra dentro de la
+          indigencia.
+        </p>
+
+        <div class="d-flex flex-wrap col-12 mt-5">
+          <p class="col-6">Fuente: Dirección de estadistica de la provincia - Mayo 2021.</p>
+
+          <b-button
+            variant="outline-secondary"
+            v-on:click="onStep(0)"
+            class="button-lg-volver"
+          >
+            Volver a inicio
+          </b-button>
+        </div>
       </div>
     </div>
 
@@ -89,9 +105,9 @@ export default {
   components: {},
   data() {
     return {
-      paso1: true,
+      paso1: false,
       paso2: false,
-      paso3: false,
+      paso3: true,
       numPersonas: 1,
       edades: [],
       sexos: [
@@ -127,7 +143,7 @@ export default {
       switch (paso) {
         case 0:
           this.paso1 = true;
-          
+
           break;
         case 1:
           this.paso2 = true;
@@ -153,7 +169,7 @@ export default {
       this.canastaBasicaAlimentaria = numbForm.format(indice * 8176.12);
     },
     calcularIndice(edad, sexo) {
-      if ((isNaN(edad))) {
+      if (isNaN(edad)) {
         return 0;
       }
       if (edad < 0) {
@@ -353,15 +369,33 @@ export default {
 
 .text-titulo {
   color: #000000;
-  font-size: 1.5rem;
+  font-size: 2rem;
   text-align: left;
   font-family: "Roboto", sans-serif;
-  font-weight: 500;
+  font-weight: 400;
+}
+
+.text-tipo-canasta {
+  color: #5b5b5b;
+  font-size: 1.5rem;
+  text-align: center;
+  margin: inherit;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+}
+
+.text-numero-canasta {
+  color: #476cc2;
+  font-size: 3rem;
+  text-align: center;
+  margin: inherit;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
 }
 
 .text-numeracion {
   color: #5b5b5b;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   text-align: center;
   margin: inherit;
   font-family: "Roboto", sans-serif;
@@ -370,8 +404,13 @@ export default {
 
 .text-subtitulo {
   color: #476cc2;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   font-family: "Roboto", sans-serif;
   font-weight: 300;
+}
+
+.button-lg-volver {
+  font-size: 1rem;
+  border-width: 0px;
 }
 </style>
