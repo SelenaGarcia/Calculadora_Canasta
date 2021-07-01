@@ -50,6 +50,7 @@
             v-model="edades[index - 1]"
             placeholder="Edad"
           />
+           <p class="text-numeracion col-1"></p>
         </div>
         <b-button v-on:click="onStep(2)" class="button-lg mt-3">
           Siguiente
@@ -69,17 +70,29 @@
           ${{ canastaBasicaAlimentaria }}
         </p>
 
-        <p class="">
+        <p class="text-canasta-explicacion">
           Si los ingresos de tu hogar se encuentran por debajo de los
-          {{ canastaBasicaGeneral }} está por debajo de la línea de la pobreza:
-          por debajo de {{ canastaBasicaAlimentaria }} se encuentra dentro de la
+          $35.656 está por debajo de la línea de la pobreza:
+          por debajo de $22.136 se encuentra dentro de la
           indigencia.
         </p>
 
-        <div class="d-flex flex-wrap col-12 mt-5">
-          <p class="col-6">Fuente: Dirección de estadistica de la provincia - Mayo 2021.</p>
+        <div
+          class="
+            d-flex
+            flex-wrap
+            col-12
+            justify-content-between
+            mt-5
+            text-canasta-footer
+          "
+        >
+          <p class="col-6">
+            Fuente: Dirección de estadistica de la provincia - Mayo 2021.
+          </p>
 
           <b-button
+            pill
             variant="outline-secondary"
             v-on:click="onStep(0)"
             class="button-lg-volver"
@@ -89,25 +102,27 @@
         </div>
       </div>
     </div>
-
-    <img
-      class="col-12 align-self-end mt-auto image-limitada-h"
-      :src="'/footer.png'"
-    />
+    <div class="row">
+      <p class="text-canasta-explicacion">
+        Desarrollado por
+        <img
+          class="align-self-end mt-auto image-limitada-h"
+          :src="'/logo-gris-texto.png'"
+        />
+      </p>
+    </div>
   </b-card>
 </template>
 
 <script>
-//component code
-
 export default {
   name: "CalculadoraCanasta",
   components: {},
   data() {
     return {
-      paso1: false,
+      paso1: true,
       paso2: false,
-      paso3: true,
+      paso3: false,
       numPersonas: 1,
       edades: [],
       sexos: [
@@ -143,7 +158,6 @@ export default {
       switch (paso) {
         case 0:
           this.paso1 = true;
-
           break;
         case 1:
           this.paso2 = true;
@@ -151,10 +165,9 @@ export default {
         case 2:
           this.paso3 = true;
           break;
+        default:
+          paso = 0;
       }
-    },
-    onComplete: function () {
-      this.$refs["wizard"].reset();
     },
     calcularCanasta() {
       var indice = 0;
@@ -318,14 +331,13 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .image-limitada {
   max-width: 300px;
 }
 
 .image-limitada-h {
-  max-height: 30px;
+  max-height: 15px;
   object-fit: scale-down;
 }
 
@@ -346,12 +358,14 @@ export default {
   background: #f3f3f3;
   border-radius: 4px;
   border-color: #cdcdcd;
+  text-align-last: center;
 }
 
 .selector-sexo {
   background: #f3f3f3;
   border-radius: 4px;
   border-color: #cdcdcd;
+  text-align-last: center;
 }
 
 .input-edad {
@@ -359,6 +373,7 @@ export default {
   border-radius: 4px;
   width: 25%;
   border-color: #cdcdcd;
+  text-align-last: center;
 }
 
 .card-calculadora {
@@ -383,7 +398,22 @@ export default {
   font-family: "Roboto", sans-serif;
   font-weight: 300;
 }
-
+.text-canasta-explicacion {
+  color: #5b5b5b;
+  font-size: 1rem;
+  text-align: center;
+  margin: inherit;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+}
+.text-canasta-footer {
+  color: #5b5b5b;
+  font-size: 0.75rem;
+  text-align: center;
+  margin: inherit;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+}
 .text-numero-canasta {
   color: #476cc2;
   font-size: 3rem;
