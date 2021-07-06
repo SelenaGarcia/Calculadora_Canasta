@@ -48,11 +48,14 @@
           <b-form-input
             class="d-flex input-edad col-3 mx-2"
             v-model="edades[index - 1]"
+            type="number"
+            min="0"
             placeholder="Edad"
           />
-           <p class="text-numeracion col-1"></p>
+          <p class="text-numeracion col-1"></p>
         </div>
-        <b-button v-on:click="onStep(2)" class="button-lg mt-3">
+        <p v-if="error">{{ error }}</p>
+        <b-button v-if="!error" v-on:click="onStep(2)" class="button-lg mt-3">
           Siguiente
         </b-button>
       </div>
@@ -72,9 +75,8 @@
 
         <p class="text-canasta-explicacion">
           Si los ingresos de tu hogar se encuentran por debajo de los
-          $35.656 está por debajo de la línea de la pobreza:
-          por debajo de $22.136 se encuentra dentro de la
-          indigencia.
+          <b>$35.656</b> está por debajo de la línea de la pobreza: por debajo
+          de <b>$22.136</b> se encuentra dentro de la indigencia.
         </p>
 
         <div
@@ -87,39 +89,35 @@
             text-canasta-footer
           "
         >
-          <p class="col-6">
+          <p class="col-6 fuente">
             Fuente: Dirección de estadistica de la provincia - Mayo 2021.
           </p>
 
-          <b-button
-            pill
-            variant="outline-secondary"
-            v-on:click="onStep(0)"
-            class="button-lg-volver"
-          >
+          <b-link v-on:click="onStep(0)" class="button-lg-volver">
             Volver a inicio
-          </b-button>
+          </b-link>
         </div>
       </div>
     </div>
-    <div class="row">
-      <p class="text-canasta-explicacion">
-        Desarrollado por
-        <img
-          class="align-self-end mt-auto image-limitada-h"
-          :src="'/logo-gris-texto.png'"
-        />
-      </p>
-    </div>
+
+    <p class="text-canasta-explicacion footer">
+      Desarrollado por
+      <img
+        class="align-self-end mt-auto image-limitada-h"
+        :src="'/logo-gris-texto.png'"
+      />
+    </p>
   </b-card>
 </template>
 
 <script>
 export default {
   name: "CalculadoraCanasta",
+
   components: {},
   data() {
     return {
+      error: false,
       paso1: true,
       paso2: false,
       paso3: false,
@@ -178,8 +176,14 @@ export default {
       }
 
       var numbForm = new Intl.NumberFormat("es-ES");
-      this.canastaBasicaGeneral = numbForm.format(indice * 18150.98);
-      this.canastaBasicaAlimentaria = numbForm.format(indice * 8176.12);
+
+      this.canastaBasicaGeneralNum = Math.round(indice * 18150.98);
+      this.canastaBasicaGeneral = numbForm.format(this.canastaBasicaGeneralNum);
+
+      this.canastaBasicaAlimentariaNum = Math.round(indice * 8176.12);
+      this.canastaBasicaAlimentaria = numbForm.format(
+        this.canastaBasicaAlimentariaNum
+      );
     },
     calcularIndice(edad, sexo) {
       if (isNaN(edad)) {
@@ -333,7 +337,7 @@ export default {
 
 <style scoped>
 .image-limitada {
-  max-width: 300px;
+  max-width: 200px;
 }
 
 .image-limitada-h {
@@ -351,6 +355,9 @@ export default {
   padding-bottom: 15px;
   padding-left: 35px;
   padding-right: 35px;
+}
+.fuente {
+  font-size: 14px;
 }
 
 .selector-cantidad {
@@ -377,14 +384,14 @@ export default {
 }
 
 .card-calculadora {
-  min-height: 700px;
+  min-height: 550px;
   border-radius: 20px;
   border-width: 3px;
 }
 
 .text-titulo {
   color: #000000;
-  font-size: 2rem;
+  font-size: 1.5rem;
   text-align: left;
   font-family: "Roboto", sans-serif;
   font-weight: 400;
@@ -442,5 +449,10 @@ export default {
 .button-lg-volver {
   font-size: 1rem;
   border-width: 0px;
+  color: #5b5b5b;
+}
+
+.footer {
+  padding-bottom: 10px;
 }
 </style>
