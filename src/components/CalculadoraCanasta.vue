@@ -10,7 +10,10 @@
       </p>
 
       <div v-if="paso1" class="d-flex flex-wrap justify-content-center">
-        <img class="col-12 image-limitada" :src="'/Calculator-pana.svg'" />
+        <img
+          class="col-12 image-limitada"
+          :src="'/imagen_principal_vector.png'"
+        />
 
         <p class="col-12 text-subtitulo">Cantidad de miembros en el hogar</p>
         <div class="d-flex col-12 justify-content-center">
@@ -28,33 +31,33 @@
 
       <div v-if="paso2">
         <p class="col-12 text-subtitulo">Como se conforma el hogar</p>
-
-        <div
-          class="d-flex justify-content-center mt-2"
-          :key="index"
-          v-for="index in numPersonas"
-        >
-          <p class="text-numeracion col-1">{{ index }}</p>
-
-          <b-form-select
-            class="selector-sexo col-3 mx-2"
-            :key="'sex' + index"
-            v-model="sexos[index - 1]"
-            :options="options"
-            v-on="calcularCanasta()"
-            >Sexo</b-form-select
+        <b-card class="v-card">
+          <div
+            class="d-flex justify-content-center mt-2 v-card__text"
+            :key="index"
+            v-for="index in numPersonas"
           >
+            <p class="text-numeracion col-1 ">{{ index }}</p>
 
-          <b-form-input
-            class="d-flex input-edad col-3 mx-2"
-            v-model="edades[index - 1]"
-            type="number"
-            min="0"
-            placeholder="Edad"
-          />
-          <p class="text-numeracion col-1"></p>
-        </div>
-        <p v-if="error">{{ error }}</p>
+            <b-form-select
+              class="selector-sexo col-3 mx-2"
+              :key="'sex' + index"
+              v-model="sexos[index - 1]"
+              :options="options"
+              v-on="calcularCanasta()"
+              >Sexo</b-form-select
+            >
+
+            <b-form-input
+              class="d-flex input-edad col-3 mx-2"
+              v-model="edades[index - 1]"
+              type="number"
+              min="0"
+              placeholder="Edad"
+            />
+            <p class="text-numeracion col-1"></p>
+          </div>
+        </b-card>
         <b-button v-if="!error" v-on:click="onStep(2)" class="button-lg mt-3">
           Siguiente
         </b-button>
@@ -336,6 +339,20 @@ export default {
 </script>
 
 <style scoped>
+html {
+  overflow: hidden !important;
+}
+
+.v-card {
+  display: flex !important;
+  flex-direction: column;
+}
+
+.v-card__text {
+  flex-grow: 1;
+  overflow: auto;
+}
+
 .image-limitada {
   max-width: 200px;
 }
