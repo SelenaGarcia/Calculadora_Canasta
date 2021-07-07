@@ -20,7 +20,7 @@
           <b-form-select
             class="selector-cantidad mx-2"
             v-model="numPersonas"
-            :options="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]"
+            :options="[1, 2, 3, 4, 5, 6, 7, 8, 9]"
           />
 
           <b-button v-on:click="onStep(1)" class="button-lg mx-2">
@@ -31,13 +31,13 @@
 
       <div v-if="paso2">
         <p class="col-12 text-subtitulo">Como se conforma el hogar</p>
-        <b-card class="v-card">
+        <div class= "scrollContainer" >
           <div
-            class="d-flex justify-content-center mt-2 v-card__text"
+            class="d-flex justify-content-center mt-2"
             :key="index"
             v-for="index in numPersonas"
           >
-            <p class="text-numeracion col-1 ">{{ index }}</p>
+            <p class="text-numeracion col-1">{{ index }}</p>
 
             <b-form-select
               class="selector-sexo col-3 mx-2"
@@ -57,7 +57,7 @@
             />
             <p class="text-numeracion col-1"></p>
           </div>
-        </b-card>
+        </div>
         <b-button v-if="!error" v-on:click="onStep(2)" class="button-lg mt-3">
           Siguiente
         </b-button>
@@ -137,9 +137,7 @@ export default {
         null,
         null,
         null,
-        null,
-        null,
-        null,
+
       ],
       canastaBasicaGeneral: 0,
       canastaBasicaAlimentaria: 0,
@@ -339,20 +337,6 @@ export default {
 </script>
 
 <style scoped>
-html {
-  overflow: hidden !important;
-}
-
-.v-card {
-  display: flex !important;
-  flex-direction: column;
-}
-
-.v-card__text {
-  flex-grow: 1;
-  overflow: auto;
-}
-
 .image-limitada {
   max-width: 200px;
 }
@@ -399,11 +383,16 @@ html {
   border-color: #cdcdcd;
   text-align-last: center;
 }
-
+.scrollContainer {
+  overflow: scroll;
+  height: 350px;
+}
 .card-calculadora {
   min-height: 550px;
   border-radius: 20px;
   border-width: 3px;
+  height: 650px;
+  width: 360px;
 }
 
 .text-titulo {
