@@ -31,7 +31,7 @@
 
       <div v-if="paso2">
         <p class="col-12 text-subtitulo">Como se conforma el hogar</p>
-        <div class= "scrollContainer" >
+        <div class="scrollContainer">
           <div
             class="d-flex justify-content-center mt-2"
             :key="index"
@@ -58,7 +58,8 @@
             <p class="text-numeracion col-1"></p>
           </div>
         </div>
-        <b-button v-if="!error" v-on:click="onStep(2)" class="button-lg mt-3">
+
+        <b-button v-on:click="onStep(2)" class="button-lg mt-3">
           Siguiente
         </b-button>
       </div>
@@ -66,22 +67,23 @@
       <div v-if="paso3">
         <p class="col-12 text-subtitulo">Resultado para tu hogar</p>
 
-        <p class="col-12 text-tipo-canasta">Canasta básica general</p>
+        <div class="">
+          <p class="col-12 text-tipo-canasta">Canasta básica general</p>
 
-        <p class="col-12 text-numero-canasta">${{ canastaBasicaGeneral }}</p>
+          <p class="col-12 text-numero-canasta">${{ canastaBasicaGeneral }}</p>
 
-        <p class="col-12 text-tipo-canasta">Canasta básica alimentaria</p>
+          <p class="col-12 text-tipo-canasta">Canasta básica alimentaria</p>
 
-        <p class="col-12 text-numero-canasta">
-          ${{ canastaBasicaAlimentaria }}
-        </p>
+          <p class="col-12 text-numero-canasta">
+            ${{ canastaBasicaAlimentaria }}
+          </p>
 
-        <p class="text-canasta-explicacion">
-          Si los ingresos de tu hogar se encuentran por debajo de los
-          <b>$35.656</b> está por debajo de la línea de la pobreza: por debajo
-          de <b>$22.136</b> se encuentra dentro de la indigencia.
-        </p>
-
+          <p class="text-canasta-explicacion">
+            Si los ingresos de tu hogar se encuentran por debajo de los
+            <b>$35.656</b> está por debajo de la línea de la pobreza: por debajo
+            de <b>$22.136</b> se encuentra dentro de la indigencia.
+          </p>
+        </div>
         <div
           class="
             d-flex
@@ -120,25 +122,12 @@ export default {
   components: {},
   data() {
     return {
-      error: false,
       paso1: true,
       paso2: false,
       paso3: false,
       numPersonas: 1,
       edades: [],
-      sexos: [
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-
-      ],
+      sexos: [null, null, null, null, null, null, null, null, null, null],
       canastaBasicaGeneral: 0,
       canastaBasicaAlimentaria: 0,
       start: 0,
@@ -168,6 +157,7 @@ export default {
           paso = 0;
       }
     },
+
     calcularCanasta() {
       var indice = 0;
 
@@ -387,13 +377,6 @@ export default {
   overflow: scroll;
   height: 350px;
 }
-.card-calculadora {
-  min-height: 550px;
-  border-radius: 20px;
-  border-width: 3px;
-  height: 650px;
-  width: 360px;
-}
 
 .text-titulo {
   color: #000000;
@@ -448,6 +431,7 @@ export default {
 .text-subtitulo {
   color: #476cc2;
   font-size: 1.5rem;
+  text-align: left;
   font-family: "Roboto", sans-serif;
   font-weight: 300;
 }
@@ -460,5 +444,24 @@ export default {
 
 .footer {
   padding-bottom: 10px;
+}
+
+@media (min-device-width: 1000px) {
+  .card-calculadora {
+    min-height: 550px;
+    border-radius: 20px;
+    border-width: 3px;
+    height: 650px;
+    width: 866px;
+  }
+}
+@media (max-device-width: 999px) {
+  .card-calculadora {
+    min-height: 550px;
+    border-radius: 20px;
+    border-width: 3px;
+    height: 650px;
+    width: 360px;
+  }
 }
 </style>
