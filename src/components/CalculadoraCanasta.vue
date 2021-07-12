@@ -32,31 +32,35 @@
       <div v-if="paso2">
         <p class="col-12 text-subtitulo">Como se conforma el hogar</p>
         <div class="scrollContainer">
-          <div
-            class="d-flex justify-content-center mt-2"
-            :key="index"
-            v-for="index in numPersonas"
-          >
-            <p class="text-numeracion col-1">{{ index }}</p>
-
-            <b-form-select
-              class="selector-sexo col-3 mx-2"
-              :key="'sex' + index"
-              v-model="sexos[index - 1]"
-              :options="options"
-              v-on="calcularCanasta()"
-              >Sexo</b-form-select
+          <b-form @submit="isValidSecondStep">
+            <div
+              class="d-flex justify-content-center mt-2"
+              :key="index"
+              v-for="index in numPersonas"
             >
+              <p class="text-numeracion col-1">{{ index }}</p>
+              <b-form-select
+                class="selector-sexo col-3 mx-2"
+                :key="'sex' + index"
+                :id="'sex' + index"
+                v-model="sexos[index - 1]"
+                :options="options"
+                v-on="calcularCanasta()"
+                :state="isValidInput(edades[index - 1])"
+              >
+              </b-form-select>
 
-            <b-form-input
-              class="d-flex input-edad col-3 mx-2"
-              v-model="edades[index - 1]"
-              type="number"
-              min="0"
-              placeholder="Edad"
-            />
-            <p class="text-numeracion col-1"></p>
-          </div>
+              <b-form-input
+                class="d-flex input-edad col-3 mx-2"
+                v-model="edades[index - 1]"
+                type="number"
+                min="0"
+                :state="isValidInput(edades[index - 1])"
+                placeholder="Edad"
+              />
+              <p class="text-numeracion col-1"></p>
+            </div>
+          </b-form>
         </div>
 
         <b-button v-on:click="onStep(2)" class="button-lg mt-3">
@@ -126,8 +130,21 @@ export default {
       paso2: false,
       paso3: false,
       numPersonas: 1,
+      showAlert: false,
       edades: [],
       sexos: [null, null, null, null, null, null, null, null, null, null],
+      sexosPopUp: [
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ],
       canastaBasicaGeneral: 0,
       canastaBasicaAlimentaria: 0,
       start: 0,
@@ -151,13 +168,49 @@ export default {
           this.paso2 = true;
           break;
         case 2:
-          this.paso3 = true;
-          break;
+          if (this.isValidSecondStep()) {
+            this.paso3 = true;
+            break;
+          } else {
+            this.paso2 = true;
+            break;
+          }
         default:
           paso = 0;
       }
     },
+    isValidSecondStep() {
+      var i = 0;
+      var valid = true;
 
+      for (i; i < this.numPersonas; i++) {
+        var select = document.getElementById("sex" + (i + 1));
+
+        if (this.sexos[i] == null) {
+          select.classList.remove("valid");
+          select.classList.add("invalid");
+
+          this.showAlert = false;
+          valid = false;
+        } else {
+          select.classList.remove("invalid");
+          select.classList.add("valid");
+
+          this.showAlert = true;
+        }
+        if (!Number.isInteger(parseInt(this.edades[i]))) {
+          valid = false;
+        }
+      }
+
+      return valid;
+    },
+    isValidSelect(input) {
+      return input != null;
+    },
+    isValidInput(input) {
+      return Number.isInteger(parseInt(input));
+    },
     calcularCanasta() {
       var indice = 0;
 
@@ -444,6 +497,14 @@ export default {
 
 .footer {
   padding-bottom: 10px;
+}
+
+.invalid {
+  border-color: red;
+}
+
+.valid {
+  border-color: green;
 }
 
 @media (min-device-width: 1000px) {
